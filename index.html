@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Happy Birthday Krishu! 👑✨</title>
+  <title>Happy Birthday Krishu! 🌸✨</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,10 +13,12 @@
 
   <style>
     :root {
-      --gold: #f3c969;
-      --gold-glow: rgba(243, 201, 105, 0.45);
-      --card-bg: rgba(22, 10, 32, 0.88);
-      --pink: #ff4d8d;
+      --primary-pink: #ff4d8d;
+      --pink-glow: rgba(255, 77, 141, 0.45);
+      --glass-bg: rgba(255, 192, 218, 0.18);
+      --glass-border: rgba(255, 255, 255, 0.45);
+      --card-shadow: 0 20px 60px rgba(184, 41, 108, 0.35);
+      --gold: #ffe066;
     }
 
     * {
@@ -30,7 +32,7 @@
     }
 
     body {
-      background: radial-gradient(circle at 50% 15%, #2a0845 0%, #120324 55%, #05000a 100%);
+      background: radial-gradient(circle at 50% 10%, #581238 0%, #2b0821 50%, #150212 100%);
       color: #fff;
       min-height: 100vh;
       display: flex;
@@ -40,11 +42,54 @@
       position: relative;
     }
 
+    /* Floating ambient glowing orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+    }
+    .orb-1 { width: 280px; height: 280px; background: #ff2a85; top: -40px; left: -40px; }
+    .orb-2 { width: 300px; height: 300px; background: #b5179e; bottom: -50px; right: -50px; }
+
     #spaceCanvas {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
+    }
+
+    /* Music Floating Button */
+    .music-btn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 20;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+    .music-btn:active { transform: scale(0.9); }
+    .music-btn.playing {
+      animation: rotateDisc 4s linear infinite;
+      border-color: var(--gold);
+    }
+    @keyframes rotateDisc {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     .viewport {
@@ -54,21 +99,22 @@
       max-width: 410px;
       height: 94vh;
       max-height: 840px;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
     }
 
+    /* Ultra Pink Frosted Glassmorphism Card */
     .card {
       width: 100%;
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1.5px solid rgba(243, 201, 105, 0.35);
-      border-radius: 30px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(243, 201, 105, 0.08);
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 32px;
+      box-shadow: var(--card-shadow), inset 0 0 25px rgba(255, 255, 255, 0.15);
       padding: 22px 18px;
       text-align: center;
       display: flex;
@@ -82,21 +128,21 @@
       width: 100%;
       flex-direction: column;
       align-items: center;
-      animation: fadeIn 0.4s ease forwards;
+      animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .screen.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.96); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.96) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .title-royal {
       font-family: 'Cinzel', serif;
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 800;
-      background: linear-gradient(135deg, #fff 15%, var(--gold) 65%, #ff85a1 100%);
+      background: linear-gradient(135deg, #ffffff 10%, #ffd0e3 60%, var(--gold) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: 1px;
@@ -105,72 +151,73 @@
     .tagline {
       font-size: 12px;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.75);
-      margin-bottom: 12px;
-      line-height: 1.45;
+      color: rgba(255, 235, 245, 0.85);
+      margin-bottom: 10px;
+      line-height: 1.4;
     }
 
-    /* Web GIF Containers */
+    /* Rounded Glass GIF Frame */
     .gif-frame {
-      width: 135px;
-      height: 135px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(243, 201, 105, 0.15) 0%, rgba(255, 77, 141, 0.1) 100%);
-      border: 2px solid rgba(243, 201, 105, 0.45);
-      margin: 8px auto 14px;
+      width: 130px;
+      height: 130px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      margin: 6px auto 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     }
     .gif-frame img {
-      width: 115px;
-      height: 115px;
-      object-fit: contain;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       pointer-events: none;
     }
 
-    .btn-gold {
-      background: linear-gradient(135deg, #fce08b 0%, #e0aa3e 60%, #b8860b 100%);
-      color: #1a0826;
-      border: none;
+    .btn-pink {
+      background: linear-gradient(135deg, #ff65a5 0%, #ff2a85 60%, #c9184a 100%);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
       padding: 12px 32px;
       font-size: 13.5px;
       font-weight: 800;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 8px 25px var(--gold-glow);
-      margin-top: 14px;
+      box-shadow: 0 8px 25px var(--pink-glow);
+      margin-top: 12px;
       transition: transform 0.15s ease;
     }
-    .btn-gold:active { transform: scale(0.96); }
+    .btn-pink:active { transform: scale(0.96); }
 
     /* Screen 1: Unlock Hold */
     .lock-circle {
-      width: 90px;
-      height: 90px;
+      width: 86px;
+      height: 86px;
       border-radius: 50%;
-      border: 2px dashed var(--gold);
+      border: 2px dashed rgba(255, 255, 255, 0.7);
+      background: rgba(255, 77, 141, 0.2);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      margin: 8px auto;
-      animation: pulse 2s infinite alternate;
+      margin: 6px auto;
+      animation: pulsePink 2s infinite alternate;
     }
-    @keyframes pulse {
-      0% { transform: scale(0.98); box-shadow: 0 0 10px rgba(243, 201, 105, 0.2); }
-      100% { transform: scale(1.05); box-shadow: 0 0 25px rgba(243, 201, 105, 0.5); }
+    @keyframes pulsePink {
+      0% { transform: scale(0.98); box-shadow: 0 0 10px rgba(255, 77, 141, 0.3); }
+      100% { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 77, 141, 0.7); }
     }
 
     /* Screen 2: Interactive Cake */
     .cake-arena {
       position: relative;
       width: 180px;
-      height: 140px;
-      margin: 4px auto 12px;
+      height: 130px;
+      margin: 4px auto 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -178,12 +225,12 @@
     }
     .cake-tier {
       width: 140px;
-      height: 60px;
-      background: linear-gradient(180deg, #ff758f 0%, #c9184a 100%);
+      height: 58px;
+      background: linear-gradient(180deg, #ff85a1 0%, #ff4d8d 100%);
       border-radius: 14px 14px 6px 6px;
       position: relative;
-      box-shadow: inset 0 -6px 10px rgba(0,0,0,0.3);
-      border: 1.5px solid rgba(255,255,255,0.3);
+      box-shadow: inset 0 -6px 10px rgba(0,0,0,0.25);
+      border: 1.5px solid rgba(255,255,255,0.4);
     }
     .frosting {
       position: absolute;
@@ -196,8 +243,8 @@
     }
     .candle {
       width: 8px;
-      height: 32px;
-      background: repeating-linear-gradient(45deg, #fff, #fff 4px, var(--gold) 4px, var(--gold) 8px);
+      height: 30px;
+      background: repeating-linear-gradient(45deg, #fff, #fff 4px, #ff4d8d 4px, #ff4d8d 8px);
       border-radius: 3px;
       position: relative;
       cursor: pointer;
@@ -216,7 +263,7 @@
     .flame.off { display: none; }
     @keyframes flick {
       0% { transform: scale(0.95); }
-      100% { transform: scale(1.1); filter: drop-shadow(0 0 14px #ffdd00); }
+      100% { transform: scale(1.1); }
     }
 
     /* Screen 3: Scratch Cards */
@@ -225,20 +272,20 @@
       flex-direction: column;
       gap: 8px;
       width: 100%;
-      margin: 8px 0;
+      margin: 6px 0;
     }
     .scratch-box {
       position: relative;
       height: 48px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(243, 201, 105, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
-      color: var(--gold);
+      color: #fff;
       cursor: pointer;
       overflow: hidden;
       padding: 0 10px;
@@ -246,11 +293,11 @@
     .scratch-cover {
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, #3d1c5a, #1f0730);
+      background: linear-gradient(135deg, #ff4d8d, #8f1d56);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(255, 255, 255, 0.85);
+      color: #fff;
       font-size: 11px;
       font-weight: 700;
       transition: opacity 0.3s ease;
@@ -260,62 +307,63 @@
       pointer-events: none;
     }
 
-    /* Screen 4: Typewriter Letter */
+    /* Screen 4: Typewriter Note FIXED (Proper Glass Box & Auto Scroll) */
     .letter-sheet {
-      background: rgba(14, 4, 22, 0.9);
-      border: 1px solid rgba(243, 201, 105, 0.3);
-      border-radius: 18px;
-      padding: 14px;
+      width: 100%;
+      height: 190px;
+      background: rgba(20, 3, 16, 0.55);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      border-radius: 20px;
+      padding: 16px 14px;
       text-align: left;
-      margin: 4px 0;
-      min-height: 170px;
-      max-height: 200px;
+      margin: 6px 0;
       overflow-y: auto;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary-pink) transparent;
+    }
+    .letter-sheet::-webkit-scrollbar {
+      width: 4px;
+    }
+    .letter-sheet::-webkit-scrollbar-thumb {
+      background: var(--primary-pink);
+      border-radius: 4px;
     }
     .letter-text {
-      font-size: 11.5px;
-      line-height: 1.65;
-      color: #f3e8ff;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #ffe8f2;
       font-weight: 500;
-      white-space: pre-line;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    /* Screen 5: Lanterns */
-    .lantern-zone {
-      position: relative;
-      height: 130px;
-      width: 100%;
-      border-radius: 16px;
-      border: 1px dashed rgba(243, 201, 105, 0.3);
-      overflow: hidden;
-      margin: 6px 0;
-      background: radial-gradient(circle at bottom, rgba(243, 201, 105, 0.15) 0%, transparent 70%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .floating-lantern {
-      position: absolute;
-      font-size: 24px;
-      animation: flyUp 3.5s ease-in forwards;
-    }
-    @keyframes flyUp {
-      0% { transform: translateY(60px) scale(0.8); opacity: 0; }
-      20% { opacity: 1; }
-      100% { transform: translateY(-100px) scale(1.3); opacity: 0; }
-    }
-
-    /* Screen 6: Certificate */
+    /* Screen 5: Certificate */
     .cert-frame {
-      border: 2px solid var(--gold);
-      border-radius: 18px;
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      border-radius: 20px;
       padding: 14px;
-      background: rgba(243, 201, 105, 0.06);
-      margin: 8px 0;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      margin: 6px 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     }
   </style>
 </head>
 <body>
+
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="music-btn" id="musicToggle" onclick="toggleMusic()">
+    🎵
+  </div>
 
   <canvas id="spaceCanvas"></canvas>
 
@@ -326,17 +374,17 @@
         <span style="font-size: 26px;">👑</span>
         <h1 class="title-royal">KRISHU'S UNIVERSE</h1>
         <p class="tagline">
-          "I know thoda late ho gaya wish karne me...<br>
+          "Thoda late ho gaya wish karne mein...<br>
           par legends ki entry hamesha grand hoti hai! 😉✨"
         </p>
 
         <div class="gif-frame">
-          <img src="https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif" alt="Sorry Crying Cute Cat" />
+          <img src="dudu-bubu.gif" alt="Dudu Bubu Cute" />
         </div>
 
-        <div class="lock-circle" onclick="goToScreen('s-cake')">
-          <span style="font-size: 24px;">✨</span>
-          <span style="font-size: 10px; font-weight: 800; color: var(--gold); margin-top: 4px;">TAP TO ENTER</span>
+        <div class="lock-circle" onclick="startJourney()">
+          <span style="font-size: 22px;">💖</span>
+          <span style="font-size: 9.5px; font-weight: 800; color: #fff; margin-top: 4px; letter-spacing: 0.5px;">TAP TO ENTER</span>
         </div>
       </div>
 
@@ -355,15 +403,15 @@
         </div>
 
         <div class="gif-frame" style="width: 100px; height: 100px; margin: 4px auto;">
-          <img style="width: 80px; height: 80px;" src="https://media.giphy.com/media/L95W4wvxsn4G0/giphy.gif" alt="Cute Kitten" />
+          <img src="ashu-dudu-ashu-bubu.gif" alt="Ashu Dudu" />
         </div>
 
-        <button class="btn-gold" id="btnCutCake" style="display:none;" onclick="cutCakeAction()">Swipe & Cut Cake 🔪</button>
+        <button class="btn-pink" id="btnCutCake" style="display:none;" onclick="cutCakeAction()">Swipe & Cut Cake 🔪</button>
       </div>
 
       <div class="screen" id="s-scratch">
         <h2 class="title-royal">Krishu's Secret Cards 🎁</h2>
-        <p class="tagline">Teeno cards par tap karke sach unlock karo:</p>
+        <p class="tagline">Teeno cards par tap karke secret padho:</p>
 
         <div class="scratch-grid">
           <div class="scratch-box" onclick="scratch(this)">
@@ -371,52 +419,34 @@
             <div class="scratch-cover">SECRET #1: TAP TO UNLOCK 🔒</div>
           </div>
           <div class="scratch-box" onclick="scratch(this)">
-            <span>🍕 2. Wish late aayi hai, par party tujhe hi deni hai!</span>
+            <span>🍕 2. Late wish hui toh kya hua, party tujhe hi deni hai!</span>
             <div class="scratch-cover">SECRET #2: TAP TO UNLOCK 🔒</div>
           </div>
           <div class="scratch-box" onclick="scratch(this)">
-            <span>❤️ 3. Never forget: I'll always have your back!</span>
+            <span>❤️ 3. Always remember: I've got your back forever!</span>
             <div class="scratch-cover">SECRET #3: TAP TO UNLOCK 🔒</div>
           </div>
         </div>
 
-        <div class="gif-frame" style="width: 100px; height: 100px; margin: 4px auto;">
-          <img style="width: 85px; height: 85px;" src="https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif" alt="Dancing Cat" />
+        <div class="gif-frame" style="width: 95px; height: 95px; margin: 4px auto;">
+          <img src="dudu-pat-bubu-dudu.gif" alt="Pat Pat Dudu" />
         </div>
 
-        <button class="btn-gold" id="btnToLetter" style="display:none;" onclick="goToScreen('s-letter')">Read Special Letter 💌</button>
+        <button class="btn-pink" id="btnToLetter" style="display:none;" onclick="goToScreen('s-letter')">Read Special Letter 💌</button>
       </div>
 
       <div class="screen" id="s-letter">
         <h2 class="title-royal">Dear Krishu 🌸</h2>
         
-        <div class="gif-frame" style="width: 90px; height: 90px; margin: 2px auto 6px;">
-          <img style="width: 75px; height: 75px;" src="https://media.giphy.com/media/BZY2KYdSaBhguOSauU/giphy.gif" alt="Heart Cat" />
+        <div class="gif-frame" style="width: 85px; height: 85px; margin: 2px auto 6px;">
+          <img src="bubu-dudu-sseeyall.gif" alt="Bubu Dudu Wave" />
         </div>
 
-        <div class="letter-sheet">
+        <div class="letter-sheet" id="letterContainer">
           <p class="letter-text" id="typewriterTarget"></p>
         </div>
 
-        <button class="btn-gold" id="btnToLanterns" style="display:none;" onclick="goToScreen('s-lantern')">Aasmaan Mein Wishes Bhejo 🏮</button>
-      </div>
-
-      <div class="screen" id="s-lantern">
-        <h2 class="title-royal">Sky Lantern Wishes ✨</h2>
-        <p class="tagline">Button tap karke Krishu ke liye aasmaan me lanterns chhedo:</p>
-
-        <div class="lantern-zone" id="lanternSky">
-          <span style="font-size: 11px; color: rgba(255,255,255,0.4);">Tap below to release...</span>
-        </div>
-
-        <div class="gif-frame" style="width: 90px; height: 90px; margin: 4px auto;">
-          <img style="width: 75px; height: 75px;" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Curious Kitten" />
-        </div>
-
-        <div style="display: flex; gap: 8px;">
-          <button class="btn-gold" onclick="launchLantern()">Launch 🏮</button>
-          <button class="btn-gold" style="background: transparent; border: 1.5px solid var(--gold); color: var(--gold);" onclick="goToScreen('s-cert')">Claim Award 🏆</button>
-        </div>
+        <button class="btn-pink" id="btnToCert" style="display:none;" onclick="goToScreen('s-cert')">Claim Official Award 🏆</button>
       </div>
 
       <div class="screen" id="s-cert">
@@ -424,27 +454,52 @@
         <h2 class="title-royal">OFFICIAL CERTIFICATE</h2>
         
         <div class="cert-frame">
-          <h3 style="font-family: 'Cinzel', serif; font-size: 14.5px; color: var(--gold); margin-bottom: 4px;">Best Friend of the Century</h3>
+          <h3 style="font-family: 'Cinzel', serif; font-size: 14.5px; color: var(--gold); margin-bottom: 4px;">Best Friend of the Millennium</h3>
           <p style="font-size: 11px; color: #fff; line-height: 1.55;">
-            Awarded to <b>KRISHU</b> for tolerating all my nonsense, being the most genuine human, and making life so much brighter!
+            Officially presented to <b>KRISHU</b> for being the most genuine person, tolerating all my nonsense, and making life 100x happier!
           </p>
-          <div style="margin-top: 6px; font-family: 'Sacramento', cursive; font-size: 18px; color: #ff85a1;">
+          <div style="margin-top: 6px; font-family: 'Sacramento', cursive; font-size: 20px; color: #ffd0e3;">
             Best Friends Forever & Always 🤍
           </div>
         </div>
 
         <div class="gif-frame" style="width: 105px; height: 105px; margin: 4px auto;">
-          <img style="width: 90px; height: 90px;" src="https://media.giphy.com/media/l41JWw65TcBGjPpZ6/giphy.gif" alt="Love Hug" />
+          <img src="bubu-dudu.gif" alt="Bubu Dudu Finale" />
         </div>
 
-        <button class="btn-gold" onclick="megaCelebration()">GRAND FINALE BLAST 🎉</button>
+        <button class="btn-pink" onclick="megaCelebration()">GRAND FINALE BLAST 🎉</button>
       </div>
 
     </div>
   </div>
 
   <script>
-    // Starry Night Particles
+    // Audio Autoplay Setup
+    const music = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicToggle");
+    let isPlaying = false;
+
+    function toggleMusic() {
+      if (isPlaying) {
+        music.pause();
+        musicBtn.classList.remove("playing");
+        isPlaying = false;
+      } else {
+        music.play().then(() => {
+          musicBtn.classList.add("playing");
+          isPlaying = true;
+        }).catch(() => {});
+      }
+    }
+
+    function startJourney() {
+      if (!isPlaying) {
+        toggleMusic();
+      }
+      goToScreen('s-cake');
+    }
+
+    // Sparkle Particle Background
     const c = document.getElementById("spaceCanvas");
     const ctx = c.getContext("2d");
     let stars = [];
@@ -453,7 +508,7 @@
       c.width = window.innerWidth;
       c.height = window.innerHeight;
       stars = [];
-      for (let i = 0; i < 75; i++) {
+      for (let i = 0; i < 65; i++) {
         stars.push({
           x: Math.random() * c.width,
           y: Math.random() * c.height,
@@ -473,7 +528,7 @@
         if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(243, 201, 105, ${Math.abs(s.alpha)})`;
+        ctx.fillStyle = `rgba(255, 200, 225, ${Math.abs(s.alpha)})`;
         ctx.fill();
       });
       requestAnimationFrame(drawStars);
@@ -515,7 +570,7 @@
         particleCount: 120,
         spread: 85,
         origin: { y: 0.5 },
-        colors: ['#f3c969', '#ff4d8d', '#ffffff']
+        colors: ['#ff4d8d', '#ffd0e3', '#ffffff', '#ffe066']
       });
       setTimeout(() => goToScreen('s-scratch'), 450);
     }
@@ -536,8 +591,8 @@
       }
     }
 
-    // Screen 4: Typewriter Letter
-    const letterContent = "Happy Birthday Krishu! 🌸✨\n\nI know I am late in wishing you, par sach yeh hai ki jo log dil ke bohot kareeb hote hain unhe sirf formality ki tarah wish nahi kiya ja sakta. Tere jaisa pagal aur genuine dost milna sach me blessing hai.\n\nThank you for always being there for dumb jokes, long gossips, aur non-stop masti. May this year bring you endless success, happy moments, glowing smile, aur zero stress!\n\nAlways stay the same, Krishu. Happy Birthday once again! 🤍🎂";
+    // Screen 4: Typewriter Letter (Auto-Scrolls cleanly inside box)
+    const letterContent = "Happy Birthday Krishu! 🌸✨\n\nI know I'm a little late in wishing you, par jo log dil ke kareeb hote hain unhe formality ki tarah wish nahi kiya ja sakta. Tere jaisa pagal, supportive aur mast dost milna sach mein gift hai.\n\nThank you for always being there for random rants, stupid laughs aur daily updates. May this year give you endless happiness, clear skin, huge success, aur zero stress!\n\nAlways stay the same beautiful soul, Krishu. Happy Birthday once again! 🤍🎂";
 
     let lIdx = 0;
     let typedOnce = false;
@@ -545,32 +600,24 @@
       if (typedOnce) return;
       typedOnce = true;
       const target = document.getElementById("typewriterTarget");
+      const container = document.getElementById("letterContainer");
       target.innerText = "";
       
       const timer = setInterval(() => {
         target.innerText += letterContent[lIdx];
         lIdx++;
+        // Keep auto-scrolling to bottom smoothly
+        container.scrollTop = container.scrollHeight;
+
         if (lIdx >= letterContent.length) {
           clearInterval(timer);
-          document.getElementById("btnToLanterns").style.display = "inline-flex";
+          document.getElementById("btnToCert").style.display = "inline-flex";
           triggerHaptic([40, 60]);
         }
       }, 22);
     }
 
-    // Screen 5: Lantern Launcher
-    function launchLantern() {
-      triggerHaptic(25);
-      const sky = document.getElementById("lanternSky");
-      const lantern = document.createElement("div");
-      lantern.className = "floating-lantern";
-      lantern.innerText = "🏮";
-      lantern.style.left = (Math.random() * 70 + 15) + "%";
-      sky.appendChild(lantern);
-      setTimeout(() => lantern.remove(), 3500);
-    }
-
-    // Screen 6: Grand Finale
+    // Screen 5: Grand Finale Blast
     function megaCelebration() {
       triggerHaptic([100, 80, 100, 120]);
       const duration = 3.5 * 1000;
@@ -578,18 +625,18 @@
 
       (function frame() {
         confetti({
-          particleCount: 5,
+          particleCount: 6,
           angle: 60,
           spread: 55,
           origin: { x: 0 },
-          colors: ['#f3c969', '#ff4d8d', '#a050ff']
+          colors: ['#ff4d8d', '#ffd0e3', '#ffe066']
         });
         confetti({
-          particleCount: 5,
+          particleCount: 6,
           angle: 120,
           spread: 55,
           origin: { x: 1 },
-          colors: ['#f3c969', '#ff4d8d', '#a050ff']
+          colors: ['#ff4d8d', '#ffd0e3', '#ffe066']
         });
 
         if (Date.now() < end) requestAnimationFrame(frame);
