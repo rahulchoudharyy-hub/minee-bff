@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday Krishu! 👑✨</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Sacramento&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --gold: #f3c969;
+      --gold-glow: rgba(243, 201, 105, 0.45);
+      --card-bg: rgba(22, 10, 32, 0.88);
+      --pink: #ff4d8d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 15%, #2a0845 0%, #120324 55%, #05000a 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #spaceCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .viewport {
+      position: relative;
+      z-index: 5;
+      width: 100%;
+      max-width: 410px;
+      height: 94vh;
+      max-height: 840px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(243, 201, 105, 0.35);
+      border-radius: 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(243, 201, 105, 0.08);
+      padding: 22px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    .screen.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .title-royal {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 15%, var(--gold) 65%, #ff85a1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .tagline {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    /* GIF Media Container */
+    .gif-frame {
+      width: 135px;
+      height: 135px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(243, 201, 105, 0.15) 0%, rgba(255, 77, 141, 0.1) 100%);
+      border: 2px solid rgba(243, 201, 105, 0.45);
+      margin: 8px auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .gif-frame img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #fce08b 0%, #e0aa3e 60%, #b8860b 100%);
+      color: #1a0826;
+      border: none;
+      padding: 12px 32px;
+      font-size: 13.5px;
+      font-weight: 800;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px var(--gold-glow);
+      margin-top: 14px;
+      transition: transform 0.15s ease;
+    }
+    .btn-gold:active { transform: scale(0.96); }
+
+    /* Screen 1: Unlock Hold */
+    .lock-circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2px dashed var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 8px auto;
+      animation: pulse 2s infinite alternate;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.98); box-shadow: 0 0 10px rgba(243, 201, 105, 0.2); }
+      100% { transform: scale(1.05); box-shadow: 0 0 25px rgba(243, 201, 105, 0.5); }
+    }
+
+    /* Screen 2: Interactive Cake */
+    .cake-arena {
+      position: relative;
+      width: 180px;
+      height: 140px;
+      margin: 4px auto 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .cake-tier {
+      width: 140px;
+      height: 60px;
+      background: linear-gradient(180deg, #ff758f 0%, #c9184a 100%);
+      border-radius: 14px 14px 6px 6px;
+      position: relative;
+      box-shadow: inset 0 -6px 10px rgba(0,0,0,0.3);
+      border: 1.5px solid rgba(255,255,255,0.3);
+    }
+    .frosting {
+      position: absolute;
+      top: -5px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: #fff;
+      border-radius: 10px;
+    }
+    .candle {
+      width: 8px;
+      height: 32px;
+      background: repeating-linear-gradient(45deg, #fff, #fff 4px, var(--gold) 4px, var(--gold) 8px);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+    }
+    .flame {
+      width: 12px;
+      height: 18px;
+      background: radial-gradient(ellipse, #fff 15%, #ffbe0b 55%, #ff0054 100%);
+      border-radius: 50% 50% 35% 35%;
+      position: absolute;
+      top: -20px;
+      left: -2px;
+      filter: drop-shadow(0 0 8px #ffbe0b);
+      animation: flick 0.6s infinite alternate;
+    }
+    .flame.off { display: none; }
+    @keyframes flick {
+      0% { transform: scale(0.95); }
+      100% { transform: scale(1.1); filter: drop-shadow(0 0 14px #ffdd00); }
+    }
+
+    /* Screen 3: Scratch Cards */
+    .scratch-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      margin: 8px 0;
+    }
+    .scratch-box {
+      position: relative;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(243, 201, 105, 0.3);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gold);
+      cursor: pointer;
+      overflow: hidden;
+      padding: 0 10px;
+    }
+    .scratch-cover {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #3d1c5a, #1f0730);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 11px;
+      font-weight: 700;
+      transition: opacity 0.3s ease;
+    }
+    .scratch-cover.done {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Screen 4: Typewriter Letter */
+    .letter-sheet {
+      background: rgba(14, 4, 22, 0.9);
+      border: 1px solid rgba(243, 201, 105, 0.3);
+      border-radius: 18px;
+      padding: 14px;
+      text-align: left;
+      margin: 4px 0;
+      min-height: 170px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .letter-text {
+      font-size: 11.5px;
+      line-height: 1.65;
+      color: #f3e8ff;
+      font-weight: 500;
+      white-space: pre-line;
+    }
+
+    /* Screen 5: Lanterns */
+    .lantern-zone {
+      position: relative;
+      height: 130px;
+      width: 100%;
+      border-radius: 16px;
+      border: 1px dashed rgba(243, 201, 105, 0.3);
+      overflow: hidden;
+      margin: 6px 0;
+      background: radial-gradient(circle at bottom, rgba(243, 201, 105, 0.15) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .floating-lantern {
+      position: absolute;
+      font-size: 24px;
+      animation: flyUp 3.5s ease-in forwards;
+    }
+    @keyframes flyUp {
+      0% { transform: translateY(60px) scale(0.8); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1.3); opacity: 0; }
+    }
+
+    /* Screen 6: Certificate */
+    .cert-frame {
+      border: 2px solid var(--gold);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(243, 201, 105, 0.06);
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="spaceCanvas"></canvas>
+
+  <div class="viewport">
+    <div class="card">
+
+      <div class="screen active" id="s-lock">
+        <span style="font-size: 26px;">👑</span>
+        <h1 class="title-royal">KRISHU'S UNIVERSE</h1>
+        <p class="tagline">
+          "I know thoda late ho gaya wish karne me...<br>
+          par legends ki entry hamesha grand hoti hai! 😉✨"
+        </p>
+
+        <div class="gif-frame">
+          <img src="sorry-pk.gif" alt="Sorry Face" />
+        </div>
+
+        <div class="lock-circle" onclick="goToScreen('s-cake')">
+          <span style="font-size: 24px;">✨</span>
+          <span style="font-size: 10px; font-weight: 800; color: var(--gold); margin-top: 4px;">TAP TO ENTER</span>
+        </div>
+      </div>
+
+      <div class="screen" id="s-cake">
+        <h2 class="title-royal">Make A Wish, Krishu! 🎂</h2>
+        <p class="tagline" id="candleStatus">Pehle candle par tap karke bujhao...</p>
+
+        <div class="cake-arena">
+          <div class="candle" onclick="blowCandle()">
+            <div class="flame" id="cakeFlame"></div>
+          </div>
+          <div class="cake-tier">
+            <div class="frosting"></div>
+            <span style="position: absolute; bottom: 8px; left:0; right:0; font-size: 12px; font-weight: 800; color: #fff;">KRISHU ✨</span>
+          </div>
+        </div>
+
+        <div class="gif-frame" style="width: 100px; height: 100px; margin: 4px auto;">
+          <img style="width: 80px; height: 80px;" src="cat-cry-cute.gif" alt="Cute Kitten" />
+        </div>
+
+        <button class="btn-gold" id="btnCutCake" style="display:none;" onclick="cutCakeAction()">Swipe & Cut Cake 🔪</button>
+      </div>
+
+      <div class="screen" id="s-scratch">
+        <h2 class="title-royal">Krishu's Secret Cards 🎁</h2>
+        <p class="tagline">Teeno cards par tap karke sach unlock karo:</p>
+
+        <div class="scratch-grid">
+          <div class="scratch-box" onclick="scratch(this)">
+            <span>😂 1. Tu 100% pagal hai par meri best friend hai!</span>
+            <div class="scratch-cover">SECRET #1: TAP TO UNLOCK 🔒</div>
+          </div>
+          <div class="scratch-box" onclick="scratch(this)">
+            <span>🍕 2. Wish late aayi hai, par party tujhe hi deni hai!</span>
+            <div class="scratch-cover">SECRET #2: TAP TO UNLOCK 🔒</div>
+          </div>
+          <div class="scratch-box" onclick="scratch(this)">
+            <span>❤️ 3. Never forget: I'll always have your back!</span>
+            <div class="scratch-cover">SECRET #3: TAP TO UNLOCK 🔒</div>
+          </div>
+        </div>
+
+        <div class="gif-frame" style="width: 100px; height: 100px; margin: 4px auto;">
+          <img style="width: 85px; height: 85px;" src="bubu-dancing-dance.gif" alt="Dancing Cat" />
+        </div>
+
+        <button class="btn-gold" id="btnToLetter" style="display:none;" onclick="goToScreen('s-letter')">Read Special Letter 💌</button>
+      </div>
+
+      <div class="screen" id="s-letter">
+        <h2 class="title-royal">Dear Krishu 🌸</h2>
+        
+        <div class="gif-frame" style="width: 90px; height: 90px; margin: 2px auto 6px;">
+          <img style="width: 75px; height: 75px;" src="pentol.jpg" alt="Heart Pentol" />
+        </div>
+
+        <div class="letter-sheet">
+          <p class="letter-text" id="typewriterTarget"></p>
+        </div>
+
+        <button class="btn-gold" id="btnToLanterns" style="display:none;" onclick="goToScreen('s-lantern')">Aasmaan Mein Wishes Bhejo 🏮</button>
+      </div>
+
+      <div class="screen" id="s-lantern">
+        <h2 class="title-royal">Sky Lantern Wishes ✨</h2>
+        <p class="tagline">Button tap karke Krishu ke liye aasmaan me lanterns chhedo:</p>
+
+        <div class="lantern-zone" id="lanternSky">
+          <span style="font-size: 11px; color: rgba(255,255,255,0.4);">Tap below to release...</span>
+        </div>
+
+        <div class="gif-frame" style="width: 90px; height: 90px; margin: 4px auto;">
+          <img style="width: 75px; height: 75px;" src="umm-kitten.jpg" alt="Watching Kitten" />
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-gold" onclick="launchLantern()">Launch 🏮</button>
+          <button class="btn-gold" style="background: transparent; border: 1.5px solid var(--gold); color: var(--gold);" onclick="goToScreen('s-cert')">Claim Award 🏆</button>
+        </div>
+      </div>
+
+      <div class="screen" id="s-cert">
+        <span style="font-size: 28px;">🏆</span>
+        <h2 class="title-royal">OFFICIAL CERTIFICATE</h2>
+        
+        <div class="cert-frame">
+          <h3 style="font-family: 'Cinzel', serif; font-size: 14.5px; color: var(--gold); margin-bottom: 4px;">Best Friend of the Century</h3>
+          <p style="font-size: 11px; color: #fff; line-height: 1.55;">
+            Awarded to <b>KRISHU</b> for tolerating all my nonsense, being the most genuine human, and making life so much brighter!
+          </p>
+          <div style="margin-top: 6px; font-family: 'Sacramento', cursive; font-size: 18px; color: #ff85a1;">
+            Best Friends Forever & Always 🤍
+          </div>
+        </div>
+
+        <div class="gif-frame" style="width: 105px; height: 105px; margin: 4px auto;">
+          <img style="width: 90px; height: 90px;" src="niquebee-iloveniquebee.gif" alt="Love Hug" />
+        </div>
+
+        <button class="btn-gold" onclick="megaCelebration()">GRAND FINALE BLAST 🎉</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Starry Night Particles
+    const c = document.getElementById("spaceCanvas");
+    const ctx = c.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+      stars = [];
+      for (let i = 0; i < 75; i++) {
+        stars.push({
+          x: Math.random() * c.width,
+          y: Math.random() * c.height,
+          radius: Math.random() * 1.3 + 0.4,
+          alpha: Math.random(),
+          speed: Math.random() * 0.02 + 0.005
+        });
+      }
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function drawStars() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      stars.forEach(s => {
+        s.alpha += s.speed;
+        if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(243, 201, 105, ${Math.abs(s.alpha)})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    function triggerHaptic(len = 25) {
+      if (navigator.vibrate) {
+        try { navigator.vibrate(len); } catch(e) {}
+      }
+    }
+
+    function goToScreen(id) {
+      triggerHaptic(30);
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      const t = document.getElementById(id);
+      if (t) t.classList.add("active");
+
+      if (id === 's-letter') {
+        startTypewriter();
+      }
+    }
+
+    // Screen 2: Candle & Cake
+    let candleBlown = false;
+    function blowCandle() {
+      if (candleBlown) return;
+      candleBlown = true;
+      triggerHaptic([30, 40, 60]);
+      document.getElementById("cakeFlame").classList.add("off");
+      document.getElementById("candleStatus").innerText = "Wish Locked! Ab cake slice karo 🎂";
+      document.getElementById("btnCutCake").style.display = "inline-flex";
+      confetti({ particleCount: 35, spread: 45, origin: { y: 0.55 } });
+    }
+
+    function cutCakeAction() {
+      triggerHaptic([60, 50, 100]);
+      confetti({
+        particleCount: 120,
+        spread: 85,
+        origin: { y: 0.5 },
+        colors: ['#f3c969', '#ff4d8d', '#ffffff']
+      });
+      setTimeout(() => goToScreen('s-scratch'), 450);
+    }
+
+    // Screen 3: Scratch Cards
+    let countScratched = 0;
+    function scratch(el) {
+      const cover = el.querySelector(".scratch-cover");
+      if (cover && !cover.classList.contains("done")) {
+        triggerHaptic(20);
+        cover.classList.add("done");
+        countScratched++;
+        confetti({ particleCount: 20, spread: 35, origin: { y: 0.6 } });
+
+        if (countScratched >= 3) {
+          document.getElementById("btnToLetter").style.display = "inline-flex";
+        }
+      }
+    }
+
+    // Screen 4: Typewriter Letter
+    const letterContent = "Happy Birthday Krishu! 🌸✨\n\nI know I am late in wishing you, par sach yeh hai ki jo log dil ke bohot kareeb hote hain unhe sirf formality ki tarah wish nahi kiya ja sakta. Tere jaisa pagal aur genuine dost milna sach me blessing hai.\n\nThank you for always being there for dumb jokes, long gossips, aur non-stop masti. May this year bring you endless success, happy moments, glowing smile, aur zero stress!\n\nAlways stay the same, Krishu. Happy Birthday once again! 🤍🎂";
+
+    let lIdx = 0;
+    let typedOnce = false;
+    function startTypewriter() {
+      if (typedOnce) return;
+      typedOnce = true;
+      const target = document.getElementById("typewriterTarget");
+      target.innerText = "";
+      
+      const timer = setInterval(() => {
+        target.innerText += letterContent[lIdx];
+        lIdx++;
+        if (lIdx >= letterContent.length) {
+          clearInterval(timer);
+          document.getElementById("btnToLanterns").style.display = "inline-flex";
+          triggerHaptic([40, 60]);
+        }
+      }, 22);
+    }
+
+    // Screen 5: Lantern Launcher
+    function launchLantern() {
+      triggerHaptic(25);
+      const sky = document.getElementById("lanternSky");
+      const lantern = document.createElement("div");
+      lantern.className = "floating-lantern";
+      lantern.innerText = "🏮";
+      lantern.style.left = (Math.random() * 70 + 15) + "%";
+      sky.appendChild(lantern);
+      setTimeout(() => lantern.remove(), 3500);
+    }
+
+    // Screen 6: Grand Finale
+    function megaCelebration() {
+      triggerHaptic([100, 80, 100, 120]);
+      const duration = 3.5 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#f3c969', '#ff4d8d', '#a050ff']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#f3c969', '#ff4d8d', '#a050ff']
+        });
+
+        if (Date.now() < end) requestAnimationFrame(frame);
+      }());
+    }
+  </script>
+</body>
+</html>
